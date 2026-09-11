@@ -1,0 +1,97 @@
+// https://github.com/YaLTeR/niri/wiki/Configuration:-Window-Rules
+window-rule {
+    geometry-corner-radius 0
+    clip-to-geometry true
+    open-maximized false
+}
+
+// Disable all screen capture
+window-rule {
+    block-out-from "screen-capture"
+}
+
+layer-rule {
+    block-out-from "screen-capture"
+}
+
+window-rule {
+    match is-window-cast-target=true
+
+    focus-ring {
+        active-color "#f38ba8"
+        inactive-color "#a6adc8"
+    }
+
+    border {
+        inactive-color "#a6adc8"
+    }
+
+    shadow {
+        color "#6c708680"
+    }
+
+    tab-indicator {
+        active-color "#a6e3a1"
+        inactive-color "#a6adc8"
+    }
+}
+
+window-rule {
+    match app-id="^(xdg-desktop-portal-(gtk|gnome|kde))$"
+    match app-id="^((T|t)hunar|(N|n)autilus)$"
+    match app-id="^((dis|arm|web)cord|vesktop|foot)$"
+
+    opacity 0.90
+}
+
+window-rule {
+    match title="^(Picture-in-Picture|Picture in picture)$"
+
+    open-floating true
+    open-focused false
+    default-column-width { proportion 0.20; }
+    default-window-height { proportion 0.25; }
+    default-floating-position x=4 y=4 relative-to="bottom-left"
+
+    border {
+        on
+        width 1
+        active-gradient from="cdd6f4ee" to="#a6e3a1ee" angle=45 relative-to="workspace-view"
+        inactive-gradient from="cdd6f4ee" to="cdd6f4ee" angle=15 relative-to="workspace-view"
+    }
+}
+
+window-rule {
+    match title="^((Open|Save|All) (Folder|File|Files))$"
+
+    match title="^((.+) — Krita)$"
+    match title="^(Project Manager|Import Media|Configure Krita)$"
+    match app-id="^(imv|mpv|org.pulseaudio.pavucontrol)$"
+
+    open-floating true
+    default-column-width { proportion 0.55; }
+    default-window-height { proportion 0.60; }
+}
+
+// Move to named workspaces
+window-rule {
+    match app-id="^(com.github.wwmm.easyeffects|foot|kitty)$"
+    
+    open-on-workspace "misc"
+}
+
+window-rule {
+    match app-id="^(trivalent)$"
+
+    open-on-workspace "browser"
+}
+
+window-rule {
+    match app-id="^(faugus-launcher|krita)$"
+    match app-id="^(org.vinegarhq.Sober)$"
+    match app-id="^(steam_app_(.+))$"
+    
+    open-maximized true
+    open-on-workspace "gaming"
+}
+

@@ -1,0 +1,158 @@
+/* Catppuccin Mocha Palette */
+@define-color base     #1e1e2e;
+@define-color mantle   #181825;
+@define-color crust    #11111b;
+@define-color text     #cdd6f4;
+@define-color subtext1 #bac2de;
+@define-color subtext0 #a6adc8;
+@define-color surface2 #585b70;
+@define-color surface1 #45475a;
+@define-color surface0 #313244;
+@define-color overlay2 #9399b2;
+@define-color overlay1 #7f849c;
+@define-color overlay0 #6c7086;
+@define-color blue      #89b4fa;
+@define-color lavender  #b4befe;
+@define-color sapphire  #74c7ec;
+@define-color teal      #94e2d5;
+@define-color green     #a6e3a1;
+@define-color yellow    #f9e2af;
+@define-color peach     #fab387;
+@define-color maroon    #eba0ac;
+@define-color red       #f38ba8;
+@define-color mauve     #cba6f7;
+@define-color pink      #f5c2e7;
+@define-color flamingo  #f2cdcd;
+@define-color rosewater #f5e0dc;
+
+* {
+    border: none;
+    border-radius: 0;
+    font-family: "FiraCode Nerd Font Mono", monospace;
+    font-size: 1.0rem;
+    min-height: 0;
+}
+
+window#waybar {
+    background: @base;
+    color: @text;
+}
+
+window#waybar.hidden {
+    opacity: 0.5;
+}
+
+tooltip {
+    background: @mantle;
+    border: 0.083rem solid @surface2;
+    border-radius: 0;
+}
+
+tooltip label {
+    color: @text;
+}
+
+/* Modules Containers */
+.modules-left,
+.modules-center,
+.modules-right {
+    background: @base;
+}
+
+/* Individual Module Styling */
+#workspaces,
+#clock,
+#battery,
+#cpu,
+#memory,
+#temperature,
+#backlight,
+#network,
+#idle_inhibitor,
+#power-profiles-daemon,
+#wireplumber,
+#custom-media,
+#custom-power,
+#tray {
+    padding: 0 1rem;
+    margin: 0.333rem 0.167rem;
+    background: @surface0;
+    color: @text;
+}
+
+/* Workspaces */
+#workspaces button {
+    padding: 0 0.5rem;
+    color: @subtext0;
+    background: transparent;
+}
+
+#workspaces button.active {
+    color: @green;
+    background: @surface1;
+}
+
+#workspaces button.urgent {
+    color: @red;
+}
+
+#workspaces button:hover {
+    color: @text;
+    background: @surface2;
+}
+
+/* Clock */
+#clock {
+    color: @text;
+    font-weight: bold;
+}
+
+/* Battery */
+#battery.charging, #battery.plugged {
+    color: @green;
+}
+
+#battery.warning:not(.charging) {
+    color: @yellow;
+}
+
+#battery.critical:not(.charging) {
+    color: @red;
+}
+
+/* System Stats */
+#cpu {
+    color: @green;
+}
+
+#memory {
+    color: @green;
+}
+
+#temperature {
+    color: @green;
+}
+
+/* Audio */
+#wireplumber.muted {
+    color: @red;
+}
+
+#idle_inhibitor.activated {
+    color: @green;
+}
+
+/* Custom Modules */
+#custom-media {
+    color: @text;
+}
+
+#custom-power {
+    color: @red;
+    padding-left: 1.25rem;
+    padding-right: 1.25rem;
+}
+
+#tray {
+    padding-right: 0.833rem;
+}

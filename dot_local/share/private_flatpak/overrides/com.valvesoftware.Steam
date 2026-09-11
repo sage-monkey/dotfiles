@@ -1,0 +1,17 @@
+[Context]
+shared=ipc;network
+sockets=pulseaudio;x11
+devices=usb;input
+features=per-app-dev-shm;multiarch;devel
+filesystems=!host-os
+
+[System Bus Policy]
+org.freedesktop.UPower=talk
+org.freedesktop.UDisks2=talk
+
+[Session Bus Policy]
+org.kde.StatusNotifierWatcher=talk
+org.freedesktop.Notifications=talk
+org.gnome.SettingsDaemon.MediaKeys=talk
+org.freedesktop.ScreenSaver=talk
+org.freedesktop.PowerManagement=talk

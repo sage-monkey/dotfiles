@@ -1,0 +1,7 @@
+@import "catppuccin-themes.rasi"
+
+configuration {
+	font: "FiraCode Nerd Font Mono 12";
+	show-icons: true;
+	icon-theme: "Tela-green";
+}

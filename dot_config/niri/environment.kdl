@@ -1,0 +1,70 @@
+//Named Workspace
+workspace "misc"
+workspace "browser"
+workspace "gaming"
+
+// Startup
+prefer-no-csd
+// spawn-at-startup "sh" "-c" "gsettings set org.gnome.desktop.interface cursor-theme 'Vimix-Cursors'"
+spawn-at-startup "sh" "-c" "gsettings set org.gnome.desktop.interface gtk-theme 'catppuccin-mocha-teal-standard+default'"
+spawn-at-startup "sh" "-c" "gsettings set org.gnome.desktop.interface icon-theme 'Tela-green'"
+spawn-at-startup "sh" "-c" "gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark'"
+spawn-at-startup "sh" "-c" "gsettings set org.gnome.desktop.interface font-name 'FiraCode Nerd Font 12'"
+spawn-at-startup "sh" "-c" "gsettings set org.gnome.desktop.interface text-scaling-factor 1"
+spawn-at-startup "sh" "-c" "gsettings set org.gnome.desktop.wm.preferences button-layout :"
+
+spawn-at-startup "/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1"
+spawn-at-startup "sh" "-c" "~/.config/zsh/scripts/wallpaper-set.sh"
+spawn-at-startup "waybar"
+spawn-at-startup "foot"
+spawn-at-startup "flatpak" "run" "com.github.wwmm.easyeffects"
+
+environment {
+    // DISPLAY ":0"
+
+    // Session
+    XDG_CURRENT_DESKTOP "Niri"
+    XDG_SESSION_TYPE "wayland"
+    XDG_SESSION_DESKTOP "Niri"
+
+    // Default to helix
+    EDITOR "helix"
+    VISUAL "helix"
+
+    // Nvidia
+    LIBVA_DRIVER_NAME "nvidia"
+    GBM_BACKEND "nvidia-drm"
+    __GLX_VENDOR_LIBRARY_NAME "nvidia"
+    NVD_BACKEND "direct"
+    
+    // Theming
+    XCURSOR_SIZE "24"
+    // XCURSOR_THEME "Vimix-Cursors"
+
+    QT_QPA_PLATFORMTHEME "qt6ct;qt5ct"
+    QT_STYLE_OVERRIDE "kvantum"
+    GTK_THEME "catppuccin-mocha-teal-standard+default"
+    ICON_THEME "Tela-green"
+
+    // Default to Wayland
+    GDK_BACKEND "wayland,x11,*"
+    SDL_VIDEODRIVER "wayland,x11"
+    CLUTTER_BACKEND "wayland"
+    QT_QPA_PLATFORM "wayland;xcb"
+    ELECTRON_OZONE_PLATFORM_HINT "auto"
+
+    // Firefox
+    // MOZ_DISABLE_RDD_SANDBOX "1"
+    EGL_PLATFORM "wayland"
+    MOZ_ENABLE_WAYLAND "1"
+}
+
+hotkey-overlay {
+    skip-at-startup
+}
+
+// A ~ at the front will be expanded to the home directory.
+// The path is formatted with strftime(3) to give you the screenshot date and time.
+screenshot-path "~/Pictures/Screenshots/%Y-%m-%d_%H-%M-%S.png"
+// screenshot-path null
+

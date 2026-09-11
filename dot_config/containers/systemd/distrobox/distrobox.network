@@ -1,0 +1,5 @@
+[Network]
+NetworkName=distrobox_network
+Options=isolate=true
+Driver=bridge
+IPv6=false

@@ -1,0 +1,3 @@
+[Session Bus Policy]
+org.gnome.Software=talk
+org.freedesktop.impl.portal.PermissionStore=talk
