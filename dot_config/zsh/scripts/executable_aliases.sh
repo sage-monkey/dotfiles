@@ -3,8 +3,6 @@
 alias fastfetch='fastfetch -c ~/.config/fastfetch/config.jsonc'
 
 alias mkdir='mkdir -p'
-alias hx='helix'
-alias ls='eza'
 
 # systemctl
 # alias reload-nctk='systemctl restart nvidia-cdi-refresh.service'
