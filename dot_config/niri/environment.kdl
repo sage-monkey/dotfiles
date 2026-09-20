@@ -28,8 +28,8 @@ environment {
     XDG_SESSION_DESKTOP "Niri"
 
     // Default to helix
-    EDITOR "helix"
-    VISUAL "helix"
+    EDITOR "hx"
+    VISUAL "hx"
 
     // Nvidia
     LIBVA_DRIVER_NAME "nvidia"

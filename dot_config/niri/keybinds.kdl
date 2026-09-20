@@ -1,7 +1,7 @@
 binds {
     Mod+Return hotkey-overlay-title="Open a Terminal: foot" { spawn "foot"; }
     Mod+D hotkey-overlay-title="Run an Application: fuzzel" { spawn "fuzzel"; }
-    Mod+E hotkey-overlay-title="Open a File Manager: thunar" { spawn "thunar"; }
+    Mod+E hotkey-overlay-title="Open a File Manager: nautilus" { spawn "nautilus"; }
     Super+Alt+L hotkey-overlay-title="Lock the Screen: swaylock" { spawn "bash" "-c" "niri msg action power-off-monitors && swaylock --image ~/.cache/monkey/wallpaper_blurred"; }
 
     XF86AudioRaiseVolume allow-when-locked=true { spawn "wpctl" "set-volume" "@DEFAULT_AUDIO_SINK@" "0.1+"; }

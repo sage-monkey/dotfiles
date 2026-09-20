@@ -103,6 +103,8 @@ history_filter = [
     "^secret-cmd",
     "^innocuous-cmd .*--secret=.+",
     "^gallery-dl",
+    "^wget",
+    "^mpv",
 ]
 
 ## prevent commands run with cwd matching any of these regexes from being written

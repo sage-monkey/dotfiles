@@ -63,7 +63,7 @@ create_container (){
     distrobox-create --name "$CONTAINER_NAME" \
         --home "$DISTROBOX_HOME/$CONTAINER_NAME" --image "$SELECT_CONTAINER_VARIANT" --hostname "$CONTAINER_NAME" \
         --volume "$CONTAINER_PACKAGE_CACHE":z \
-        --volume /usr/share/vulkan/icd.d/nvidia_icd.json:/usr/share/vulkan/icd.d/nvidia_icd.json:ro \
+        --volume /usr/share/vulkan/icd.d/nvidia_icd.x86_64.json:/usr/share/vulkan/icd.d/nvidia_icd.x86_64.json:ro \
         --nvidia \
         --unshare-devsys --unshare-groups --unshare-process --unshare-ipc --unshare-netns --unshare-all \
         --additional-flags "$SELECTED_NETWORK"
