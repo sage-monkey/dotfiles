@@ -11,7 +11,7 @@ select = "underline"
 [editor.soft-wrap]
 enable = true
 wrap-at-text-width = true
-max-wrap = 50
+max-wrap = 120
 max-indent-retain = 0
 wrap-indicator = ""
 
