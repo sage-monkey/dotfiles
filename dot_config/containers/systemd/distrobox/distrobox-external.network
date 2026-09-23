@@ -1,0 +1,6 @@
+[Network]
+NetworkName=distrobox-external_network
+Driver=bridge
+IPv6=false
+Options=isolate=true
+Internal=false

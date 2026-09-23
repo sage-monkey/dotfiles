@@ -50,8 +50,8 @@ create_container (){
     local CONTAINER_PACKAGE_CACHE="${CONTAINER_CACHE[$SELECT_CONTAINER_VARIANT]}"
 
     local NETWORK_OPTIONS=(
-        "--network distrobox_network"
-        "--network distrobox_network --network caddy_network"
+        "--network distrobox-external_network"
+        "--network distrobox-external_network --network caddy-internal_network"
     )
 
     local SELECTED_NETWORK
