@@ -1,4 +1,4 @@
-#!/usr/bin/env sh
+#!/usr/bin/env zsh
 
 alias fastfetch='fastfetch -c ~/.config/fastfetch/config.jsonc'
 

@@ -105,6 +105,7 @@ history_filter = [
     "^gallery-dl",
     "^wget",
     "^mpv",
+    "^rm",
 ]
 
 ## prevent commands run with cwd matching any of these regexes from being written

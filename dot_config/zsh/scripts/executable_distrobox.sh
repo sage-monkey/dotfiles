@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/usr/bin/env zsh
 
 set -oue pipefail
 
@@ -12,7 +12,7 @@ get_running_containers (){
 
 # Distrobox remove
 remove_container (){
-	echo "Warning!!! This will automatically stop and remove the selected container."
+	echo "WARNING!!! This will automatically stop and remove the selected container."
 	local SELECT_CONTAINER
     SELECT_CONTAINER=$(get_containers | fzf)
 	echo "${SELECT_CONTAINER} is being removed."
@@ -23,7 +23,7 @@ remove_container (){
 stop_container (){
 	local SELECT_CONTAINER
     SELECT_CONTAINER=$(get_running_containers | fzf)
-	echo "${SELECT_CONTAINER} is being stoped."
+	echo "${SELECT_CONTAINER} is being stopped."
 	echo -e "y" | distrobox-stop "${SELECT_CONTAINER}"
 }
 
@@ -68,7 +68,7 @@ create_container (){
         --unshare-devsys --unshare-groups --unshare-process --unshare-ipc --unshare-netns --unshare-all \
         --additional-flags "$SELECTED_NETWORK"
 
-        # --init-hooks "install -o 1000 -g 1000 -d /tmp/.X11-unix-$(cat /etc/hostname)-upper;install -o 1000 -g 1000 -d /tmp/.X11-unix-$(cat /etc/hostname)-work;mount -t overlay -o lowerdir=/tmp/.X11-unix,upperdir=/tmp/.X11-unix-$(cat /etc/hostname)-upper,workdir=/tmp/.X11-unix-$(cat /etc/hostname)-work overlay /tmp/.X11-unix"
+
 }
 
 clear_container_cache (){
