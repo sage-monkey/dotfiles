@@ -68,7 +68,6 @@ create_container (){
         --unshare-devsys --unshare-groups --unshare-process --unshare-ipc --unshare-netns --unshare-all \
         --additional-flags "$SELECTED_NETWORK"
 
-
 }
 
 clear_container_cache (){
