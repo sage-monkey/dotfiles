@@ -1,7 +1,5 @@
 #!/usr/bin/env zsh
 
-set -oue pipefail
-
 GNOME_PATH=$HOME/.config/zsh/misc/gnome
 
 echo "Applying gnome settings"

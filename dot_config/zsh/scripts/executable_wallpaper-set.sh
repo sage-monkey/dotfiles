@@ -1,7 +1,5 @@
 #!/usr/bin/env zsh
 
-set -oue pipefail
-
 WALLPAPER_DIR=$HOME/.cache/monkey
 mkdir -p "$WALLPAPER_DIR"
 

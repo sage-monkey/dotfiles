@@ -1,7 +1,5 @@
 #!/usr/bin/env zsh
 
-set -oue pipefail
-
 get_containers (){
     podman ps -a --filter label=manager=distrobox --format "{{.Names}}"
 }
