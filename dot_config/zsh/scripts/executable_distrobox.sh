@@ -1,4 +1,4 @@
-#!/usr/bin/env zsh
+#!/usr/bin/env bash
 
 get_containers (){
     podman ps -a --filter label=manager=distrobox --format "{{.Names}}"
