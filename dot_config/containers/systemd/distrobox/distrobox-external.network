@@ -4,3 +4,8 @@ Driver=bridge
 IPv6=false
 Options=isolate=true
 Internal=false
+
+NetworkDeleteOnStop=true
+
+[Install]
+WantedBy=default.target

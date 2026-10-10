@@ -1,115 +1,142 @@
 #!/usr/bin/env bash
+set -euo pipefail
 
-get_containers (){
-    podman ps -a --filter label=manager=distrobox --format "{{.Names}}"
+# List all distrobox containers
+list_containers() {
+    podman ps -a --filter label=manager=distrobox --format '{{.Names}}'
 }
 
-get_running_containers (){
-    podman ps --filter label=manager=distrobox --format "{{.Names}}"
+# List running distrobox containers
+list_running_containers() {
+    podman ps --filter label=manager=distrobox --format '{{.Names}}'
 }
 
-# Distrobox remove
-remove_container (){
-	echo "WARNING!!! This will automatically stop and remove the selected container."
-	local SELECT_CONTAINER
-    SELECT_CONTAINER=$(get_containers | fzf)
-	echo "${SELECT_CONTAINER} is being removed."
-	echo -e "y" | distrobox-stop "${SELECT_CONTAINER}"
-	echo -e "y" | distrobox-rm "${SELECT_CONTAINER}"
+# Remove a container
+remove_container() {
+    echo 'WARNING!!! This will stop and remove the selected container.'
+    local container
+    container=$(list_containers | fzf)
+    echo "${container} is being removed."
+    echo "y" | distrobox-stop "$container"
+    echo "y" | distrobox-rm "$container"
 }
 
-stop_container (){
-	local SELECT_CONTAINER
-    SELECT_CONTAINER=$(get_running_containers | fzf)
-	echo "${SELECT_CONTAINER} is being stopped."
-	echo -e "y" | distrobox-stop "${SELECT_CONTAINER}"
+# Stop a running container
+stop_container() {
+    local container
+    container=$(list_running_containers | fzf)
+    echo "${container} is being stopped."
+    echo "y" | distrobox-stop "$container"
 }
 
-create_container (){
-    echo "Select Container Variant"
+# Create a new container
+create_container() {
+    local distrobox_home="$HOME/Documents/Distrobox"
 
-    local DISTROBOX_HOME="$HOME/Documents/Distrobox"
+    # Ensure package cache volumes exist
+    podman volume create --ignore --label package-cache arch_package_cache 2>/dev/null || true
+    podman volume create --ignore --label package-cache debian_package_cache 2>/dev/null || true
 
-    podman volume create --ignore -l distrobox_package_cache arch_package_cache
-    podman volume create --ignore -l distrobox_package_cache debian_package_cache
-
-    local CONTAINER_VARIANT=(
-        "ghcr.io/ublue-os/arch-toolbox:latest"
-        "quay.io/toolbx-images/debian-toolbox:unstable"
+    local -a container_variants=(
+        'ghcr.io/ublue-os/arch-toolbox:latest'
+        'quay.io/toolbx-images/debian-toolbox:unstable'
     )
 
-    declare -A CONTAINER_CACHE
-    CONTAINER_CACHE["ghcr.io/ublue-os/arch-toolbox:latest"]="arch_package_cache:/var/cache/pacman/pkg"
-    CONTAINER_CACHE["quay.io/toolbx-images/debian-toolbox:unstable"]="debian_package_cache:/var/cache/apt/archives"
-
-    local SELECT_CONTAINER_VARIANT
-    SELECT_CONTAINER_VARIANT=$(printf "%s\n" "${CONTAINER_VARIANT[@]}" | fzf)
-
-    local CONTAINER_PACKAGE_CACHE="${CONTAINER_CACHE[$SELECT_CONTAINER_VARIANT]}"
-
-    local NETWORK_OPTIONS=(
-        "--network distrobox-external_network"
-        "--network distrobox-external_network --network caddy-internal_network"
+    local -A variant_cache=(
+        ['ghcr.io/ublue-os/arch-toolbox:latest']='arch_package_cache:/var/cache/pacman/pkg'
+        ['quay.io/toolbx-images/debian-toolbox:unstable']='debian_package_cache:/var/cache/apt/archives'
     )
 
-    local SELECTED_NETWORK
-    SELECTED_NETWORK=$(printf "%s\n" "${NETWORK_OPTIONS[@]}" | fzf)
+    local selected_variant
+    selected_variant=$(printf '%s\n' "${container_variants[@]}" | fzf)
 
-    local CONTAINER_NAME
-    read -rp "Enter Container Name: " CONTAINER_NAME
+    local package_cache="${variant_cache[$selected_variant]}"
 
-    distrobox-create --name "$CONTAINER_NAME" \
-        --home "$DISTROBOX_HOME/$CONTAINER_NAME" --image "$SELECT_CONTAINER_VARIANT" --hostname "$CONTAINER_NAME" \
-        --volume "$CONTAINER_PACKAGE_CACHE":z \
+    local -a network_options=(
+        '--network distrobox-external_network'
+        '--network distrobox-external_network --network caddy-internal_network'
+    )
+
+    local selected_network
+    selected_network=$(printf '%s\n' "${network_options[@]}" | fzf)
+
+    local container_name
+    read -rp 'Enter Container Name: ' container_name
+
+    distrobox-create --name "$container_name" \
+        --home "$distrobox_home/$container_name" \
+        --image "$selected_variant" \
+        --hostname "$container_name" \
+        --volume "$package_cache":z \
         --volume /usr/share/vulkan/icd.d/nvidia_icd.x86_64.json:/usr/share/vulkan/icd.d/nvidia_icd.x86_64.json:ro \
         --nvidia \
-        --unshare-devsys --unshare-groups --unshare-process --unshare-ipc --unshare-netns --unshare-all \
-        --additional-flags "$SELECTED_NETWORK"
-
+        --unshare-devsys \
+        --unshare-groups \
+        --unshare-process \
+        --unshare-ipc \
+        --unshare-netns \
+        --unshare-all \
+        --additional-flags "$selected_network"
 }
 
-clear_container_cache (){
-    local CONTAINER_VARIANT=(
-        "Arch"
-        "Debian"
+# Clear package cache for a selected distro
+clear_container_cache() {
+    local -a distros=(
+        'Arch'
+        'Debian'
     )
-    
-    declare -A CONTAINER_CACHE
-    CONTAINER_CACHE["Arch"]="arch_package_cache"
-    CONTAINER_CACHE["Debian"]="debian_package_cache"
-    
-    echo "WARNING THIS WILL DELETE ALL PACKAGE CACHE!!!"
+
+    local -A distro_cache=(
+        ['Arch']='arch_package_cache'
+        ['Debian']='debian_package_cache'
+    )
+
+    echo 'WARNING THIS WILL DELETE ALL PACKAGE CACHE!!!'
     sleep 3
-    local SELECT_CONTAINER_VARIANT
-    SELECT_CONTAINER_VARIANT=$(printf "%s\n" "${CONTAINER_VARIANT[@]}" | fzf)
 
-    local CONTAINER_PACKAGE_CACHE="${CONTAINER_CACHE[$SELECT_CONTAINER_VARIANT]}"
+    local selected_distro
+    selected_distro=$(printf '%s\n' "${distros[@]}" | fzf)
 
-    podman volume rm "$CONTAINER_PACKAGE_CACHE"
-    podman volume create --ignore -l distrobox_package_cache "$CONTAINER_PACKAGE_CACHE"
+    local cache_volume="${distro_cache[$selected_distro]}"
+    podman volume rm "$cache_volume"
+    podman volume create --ignore --label package-cache "$cache_volume"
 }
 
-# List and enter selected container
-enter_container (){
-    local SELECT_CONTAINER
-    SELECT_CONTAINER=$(get_containers | fzf)
-    distrobox-enter "${SELECT_CONTAINER}"
+# List and enter a container
+enter_container() {
+    local container
+    container=$(list_containers | fzf)
+    distrobox-enter "$container"
 }
 
-# Check if no arguments were passed
-if [[ $# -eq 0 ]]; then
-    enter_container
-    exit 0
-fi
+# Main entry point
+main() {
+    if [[ $# -eq 0 ]]; then
+        enter_container
+        return 0
+    fi
 
-# Arguments
-while [[ "$#" -gt 0 ]]; do
-    case $1 in
-        q|--quit) stop_container;;
-        rm|--remove) remove_container;;
-        rmc|--clear-cache) clear_container_cache;;
-        c|--create) create_container;;
-        *) echo "Unknown parameter: $1"; exit 1;;
-    esac
-    shift
-done
+    while [[ $# -gt 0 ]]; do
+        case "$1" in
+            q|--quit)
+                stop_container
+                ;;
+            rm|--remove)
+                remove_container
+                ;;
+            rmc|--clear-cache)
+                clear_container_cache
+                ;;
+            c|--create)
+                create_container
+                ;;
+            *)
+                echo "Unknown parameter: $1"
+                exit 1
+                ;;
+        esac
+        shift
+    done
+}
+
+main "$@"
